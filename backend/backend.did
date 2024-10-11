@@ -1,0 +1,40 @@
+type Tile = 
+ record {
+   resource: opt ResourceType;
+   value: nat;
+ };
+type ResourceType = 
+ variant {
+   brick;
+   grain;
+   ore;
+   wood;
+   wool;
+ };
+type Building = 
+ variant {
+   city;
+   road;
+   settlement;
+ };
+service : {
+  buildSettlement: (nat, nat, nat) -> (bool);
+  endTurn: () -> ();
+  getGameState: () ->
+   (opt
+     record {
+       board: vec vec Tile;
+       currentPlayer: nat;
+       players:
+        vec
+         record {
+           buildings: vec Building;
+           id: nat;
+           resources: vec record {
+                            ResourceType;
+                            nat;
+                          };
+         };
+     }) query;
+  initGame: (nat) -> ();
+}
